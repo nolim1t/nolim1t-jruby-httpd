@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+<appender name="com.myapp.fileappender" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="file" value="http.log"/>
+    <param name="threshold" value="debug"/>
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d{ISO8601} [%t] %-5p %x - %m%n" />
+    </layout>
+</appender>
+
+<!-- Define all the loggers below -->
+<logger name="com.bt.httpd">
+    <appender-ref ref="com.myapp.fileappender" />
+</logger>
+
+</log4j:configuration>
+
+
