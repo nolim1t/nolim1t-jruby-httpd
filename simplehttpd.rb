@@ -4,19 +4,22 @@ require 'log4j-1.2.15.jar'
 
 
 class Simple < WEBrick::HTTPServlet::AbstractServlet
-
-  def do_GET(request, response)
-    @logger.info "Hello world page accessed"
-    status, content_type, body = do_stuff_with(request)
-
-    response.status = status
-    response['Content-Type'] = content_type
-    response.body = body
-  end
-
-  def do_stuff_with(request)
-    return 200, "text/plain", "Hello World"
-  end
+    def do_GET(request, response)
+        # Sample parameter test
+        param1 = request.query["response"]
+        if param1.to_s.length > 0 then
+            msg = "Parameter passed: #{param1}"
+            @logger.info "Parameter passed by #{request.addr} (#{param1})"
+        else
+            msg = "Missing parameter: response"
+        end
+        # Pass to HTTP Client
+        response.status = "200"
+        response['Content-Type'] = "text/plain"
+        response.body = msg
+    end
+    # Accept POST the same way as GET
+    alias :do_POST :do_GET
 
 end
 
@@ -35,7 +38,7 @@ if $0 == __FILE__ then
     import org.apache.log4j.Logger
 
     # set up logger
-    logger = Log4j.getLogger(log4j_rootlogger)
+    logger = Logger.getLogger(log4j_rootlogger)
     # configure logger
     DOMConfigurator.configure(log4j_path)
 
